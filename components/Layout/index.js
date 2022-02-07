@@ -4,10 +4,10 @@ import { Children } from 'react/cjs/react.production.min';
 
 export default function Layout({children}) {
   return (
-    <div>
+    <>
         <Head>
         <title>Training Form</title>
         </Head>
         {children}
-    </div>);
+    </>);
 }
