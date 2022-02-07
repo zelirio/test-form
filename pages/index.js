@@ -3,7 +3,7 @@ import { Form, Input, Button, Select, Checkbox, Radio } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css'
 import { css } from '@emotion/react'
-import { baseInputStyle, rowStyle, leftInputStyle, middleInputStyle, rightInputStyle, paragraphStyle, verticalInputStyle, horizontalInputStyle, horizontalRightInputStyle, selectStyle } from '../styles/Home.styles';
+import { baseInputStyle, rowStyle, leftInputStyle, middleInputStyle, rightInputStyle, paragraphStyle, verticalInputStyle, horizontalInputStyle, horizontalRightInputStyle, selectStyle, formStyle } from '../styles/Home.styles';
 import Layout from '../components/Layout/Layout';
 import { useState } from 'react/cjs/react.development';
 
@@ -45,7 +45,7 @@ export default function Home() {
         form={form}
         layout="vertical"
         requiredMark={false}
-        css={css`padding: 20px;`}
+        css={formStyle}
       >
         <Form.Item name="email" label="Email Address" required>
           <Input type="email" css={baseInputStyle} placeholder="" />

@@ -1,6 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 
+export const formStyle = css`
+padding: 20px;
+@media (max-width: 575px) {
+  & .ant-form-item {
+    flex-direction: row;
+  }
+}`
 
 export const baseInputStyle = css`
 border-radius: 5px;
