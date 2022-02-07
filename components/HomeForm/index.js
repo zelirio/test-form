@@ -1,19 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { Form, Input, Button, Select, Checkbox, Radio } from 'antd';
-import { LockOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css'
 import { css } from '@emotion/react'
-import { baseInputStyle, rowStyle, leftInputStyle, middleInputStyle, rightInputStyle, paragraphStyle, verticalInputStyle, horizontalInputStyle, horizontalRightInputStyle, selectStyle, formStyle } from './styles';
-import { useState } from 'react/cjs/react.development';
+import { baseInputStyle, rowStyle, verticalInputStyle, horizontalInputStyle, horizontalRightInputStyle, selectStyle, formStyle } from './styles';
+import PaymentInformation from '../PaymentInformation';
 
 export default function HomeForm() {
 
   const [form] = Form.useForm();
-
-  const [cardValue, SetCardValue] = useState("")
-  const [dateValue, SetDateValue] = useState("")
-  const [cvvValue, SetCvvValue] = useState("")
-  const [zipValue, SetZipValue] = useState("")
 
   const technologiesOptions = [
     {label: "2G", value: "2G"},
@@ -30,60 +24,6 @@ export default function HomeForm() {
   ]
 
   const { Option } = Select;
-
-  const focusNext = (event, value, maxLength) => {
-    if(value.length >= maxLength){
-        const formular = event.target.form;
-        const index = [...formular].indexOf(event.target)
-        formular.elements[index + 1].focus()
-    }
-  }
-
-  const formatCardNumber = event => {
-    const value = event.target.value
-    const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g
-    const onlyNumbers = value.replace(/[^\d]/g, '')
-  
-    const formatted = onlyNumbers.replace(regex, (regex, $1, $2, $3, $4) =>
-    [$1, $2, $3, $4].filter(group => !!group).join(' '))
-    SetCardValue(formatted)
-
-    focusNext(event, formatted, 19)
-  }
-
-  const formatDate = event => {
-    const value = event.target.value
-    const regex = /^(\d{0,2})(\d{0,2})$/g
-    const onlyNumbers = value.replace(/[^\d]/g, '')
-  
-    const formatted = onlyNumbers.replace(regex, (regex, $1, $2) =>
-    [$1, $2].filter(group => !!group).join('/'))
-
-    if(formatted.length == 2 && dateValue.length <  formatted.length || dateValue.length == 2 && formatted.length == 2){
-        formatted += "/"
-    }
-
-    SetDateValue(formatted)
-
-    focusNext(event, formatted, 5)
-  }
-
-  const formatCVV = event => {
-    const value = event.target.value
-    const onlyNumbers = value.replace(/[^\d]/g, '')
-  
-    SetCvvValue(onlyNumbers)
-
-    focusNext(event, value, 3)
-  }
-
-  const formatZip = event => {
-    const value = event.target.value
-    const onlyNumbers = value.replace(/[^\d]/g, '')
-  
-    SetZipValue(onlyNumbers)
-  }
-
 
   return (<Form
     form={form}
@@ -123,16 +63,10 @@ export default function HomeForm() {
         <Input css={baseInputStyle} placeholder=""  />
       </Form.Item>
     </div>
-
+    
     <Form.Item name="payment" label="Payment details" required>
-      <Input.Group compact>
-        <Input css={leftInputStyle} placeholder="0000 0000 0000 0000" value={cardValue} maxLength={19} onChange={formatCardNumber} prefix={<LockOutlined />}/>
-        <Input css={middleInputStyle} placeholder="MM/YY" value={dateValue} maxLength={5} onChange={formatDate} />
-        <Input css={middleInputStyle} placeholder="CVV" value={cvvValue} maxLength={3} onChange={formatCVV}/>
-        <Input css={rightInputStyle} placeholder="ZIP" value={zipValue} maxLength={5} onChange={formatZip}/>
-      </Input.Group>
+        <PaymentInformation />
     </Form.Item>
-    <p css={paragraphStyle}>Encrypted and Secured</p>
 
     <Form.Item name="technologies" label="What radio technologies are you using?" valuePropName="checked" required>
       <Checkbox.Group options={technologiesOptions}/>

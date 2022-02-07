@@ -1,39 +1,13 @@
+import { baseInputStyle } from "../../assets/styles/baseInputStyle"
+import { mq } from "../../assets/styles/mq"
+
 export const formStyle = {
 padding: "20px",
-"@media (max-width: 575px)" : {
-  "& .ant-form-item" : {
-    flexDirection: "row"
-  }
-}}
-
-export const baseInputStyle = {
-borderRadius: "5px !important",
-"&:focus": {
-    borderColor: "#9CA5F8",
-}
-}
-
-
-export const leftInputStyle = {
-...baseInputStyle,
-maxWidth: "40%",
-borderRight: "0px",
-borderRadius: "5px 0 0 5px !important",
-}
-
-export const middleInputStyle = {
-...baseInputStyle,
-maxWidth: "20%",
-borderRight: "0px",
-borderLeft: "0px",
-borderRadius: 0
-}
-
-export const rightInputStyle = {
-...baseInputStyle,
-maxWidth: "20%",
-borderLeft: "0px",
-borderRadius: "0 5px 5px 0 !important"
+[mq[0]]: {
+    "& .ant-form-item" : {
+        flexDirection: "row"
+    }
+} 
 }
 
 export const rowStyle = {
@@ -46,12 +20,6 @@ justifyContent: "space-between"
 export const columnStyle = {
 display: "flex",
 flexDirection: "column"
-}
-
-export const paragraphStyle = {
-fontFamily: "monospace",
-color: "#888",
-fontSize: "0.7em",
 }
 
 export const verticalInputStyle = {
