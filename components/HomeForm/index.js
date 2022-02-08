@@ -10,10 +10,12 @@ import {
   selectStyle,
   formStyle,
   StyleSpan,
+  redBorderStyle,
 } from "./styles";
 import PaymentInformation from "../PaymentInformation";
 import { Controller, useForm } from "react-hook-form";
 import { baseInputStyle } from "../../assets/styles/baseInputStyle";
+import { CheckOutlined, WarningOutlined } from "@ant-design/icons";
 
 export default function HomeForm() {
   const [form] = Form.useForm();
@@ -23,7 +25,7 @@ export default function HomeForm() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({reValidateMode: 'onBlur'});
   const onSubmit = (data) => console.log(data);
 
   const payValidation = (array) => {
@@ -75,10 +77,11 @@ export default function HomeForm() {
           <Form.Item name={name} label="Email Address" required>
             <Input
               type="email"
-              css={baseInputStyle}
+              css={[baseInputStyle, errors.email && redBorderStyle]}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
+              suffix={errors.email && <WarningOutlined css={css`color:red`}/>}
             />
             {errors.email && errors.email.type === "required" && (
               <StyleSpan>Please enter your email address</StyleSpan>
@@ -95,12 +98,13 @@ export default function HomeForm() {
             rules={{ required: true }}
             render={({ field: { value, name, ref, onChange, onBlur } }) => (
               <Input
-                css={horizontalInputStyle}
+                css={[horizontalInputStyle, errors.firstName && redBorderStyle]}
                 placeholder="First Name"
                 name={name}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
+                suffix={errors.firstName && <WarningOutlined css={css`color:red`}/>}
               />
             )}
           />
@@ -110,12 +114,13 @@ export default function HomeForm() {
             rules={{ required: true }}
             render={({ field: { value, name, ref, onChange, onBlur } }) => (
               <Input
-                css={horizontalRightInputStyle}
+                css={[horizontalRightInputStyle, errors.lastName && redBorderStyle]}
                 placeholder="Last Name"
                 name={name}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
+                suffix={errors.lastName && <WarningOutlined css={css`color:red`}/>}
               />
             )}
           />
@@ -134,12 +139,13 @@ export default function HomeForm() {
             rules={{ required: true }}
             render={({ field: { value, name, ref, onChange, onBlur } }) => (
               <Input
-                css={verticalInputStyle}
+                css={[verticalInputStyle, errors.street && redBorderStyle]}
                 placeholder="Street Address"
                 name={name}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
+                suffix={errors.street && <WarningOutlined css={css`color:red`}/>}
               />
             )}
           />
@@ -179,11 +185,12 @@ export default function HomeForm() {
               required
             >
               <Input
-                css={baseInputStyle}
+                css={[baseInputStyle, errors.city && redBorderStyle]}
                 placeholder=""
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
+                suffix={errors.city && <WarningOutlined css={css`color:red`}/>}
               />
               {errors.city && errors.city.type === "required" && (
                 <StyleSpan>Please enter your city name</StyleSpan>
@@ -199,7 +206,7 @@ export default function HomeForm() {
           render={({ field: { value, name, ref, onChange, onBlur } }) => (
             <Form.Item css={selectStyle} name={name} label="State" required>
               <Select
-                css={baseInputStyle}
+                css={[baseInputStyle, errors.state && redBorderStyle]}
                 placeholder="Please select"
                 value={value}
                 onChange={onChange}
@@ -229,12 +236,13 @@ export default function HomeForm() {
               required
             >
               <Input
-                css={baseInputStyle}
+                css={[baseInputStyle, errors.zip && redBorderStyle]}
                 placeholder=""
                 maxLength={5}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
+                suffix={errors.zip && <WarningOutlined css={css`color:red`}/>}
               />
               {errors.zip && errors.zip.type === "required" && (
                 <StyleSpan>Please enter your zip code</StyleSpan>
@@ -257,6 +265,7 @@ export default function HomeForm() {
               value={value}
               onChange={onChange}
               onBlur={onBlur}
+              borderColor={errors.pay && "red"}
             />
             {errors.pay && errors.pay.type === "required" && (
               <StyleSpan>Please enter all your information</StyleSpan>
@@ -305,7 +314,7 @@ export default function HomeForm() {
               onChange={onChange}
               onBlur={onBlur}
             />
-            {errors.tech && errors.tech.type === "required" && (
+            {errors.data && errors.data.type === "required" && (
               <StyleSpan>Please select one</StyleSpan>
             )}
           </Form.Item>

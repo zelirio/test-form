@@ -47,5 +47,11 @@ export const selectStyle = {
 };
 
 export const StyleSpan = styled.span(() => ({
-  color: "red"
+  color: "red",
+  marginBottom: "24px",
+  marginTop: 0
 }))
+
+export const redBorderStyle = {
+  borderColor: "red"
+}

@@ -3,6 +3,7 @@ import { Input } from "antd";
 import React from "react";
 import { LockOutlined } from "@ant-design/icons";
 import { useState } from "react/cjs/react.development";
+import { css } from "@emotion/react";
 import {
   leftInputStyle,
   middleInputStyle,
@@ -13,7 +14,9 @@ import {
 PaymentInformation.defaultProps = {
   zipLength: 5,
   value: "",
-  onchange: () => {}
+  onChange: () => {},
+  borderColor: ""
+
 };
 
 export default function PaymentInformation(props) {
@@ -86,13 +89,13 @@ export default function PaymentInformation(props) {
     props.onChange([cardValue, dateValue, cvvValue, onlyNumbers]);
   };
 
-  //console.log(props.value);
+  const border = css`border-color: ${props.borderColor}`
 
   return (
     <>
       <Input.Group compact>
         <Input
-          css={leftInputStyle}
+          css={[leftInputStyle, border]}
           placeholder="0000 0000 0000 0000"
           value={cardValue}
           maxLength={19}
@@ -100,21 +103,21 @@ export default function PaymentInformation(props) {
           prefix={<LockOutlined />}
         />
         <Input
-          css={middleInputStyle}
+          css={[middleInputStyle, border]}
           placeholder="MM/YY"
           value={dateValue}
           maxLength={5}
           onChange={formatDate}
         />
         <Input
-          css={middleInputStyle}
+          css={[middleInputStyle, border]}
           placeholder="CVV"
           value={cvvValue}
           maxLength={3}
           onChange={formatCVV}
         />
         <Input
-          css={rightInputStyle}
+          css={[rightInputStyle, border]}
           placeholder="ZIP"
           value={zipValue}
           maxLength={props.zipLength}
