@@ -9,6 +9,7 @@ import {
   horizontalRightInputStyle,
   selectStyle,
   formStyle,
+  StyleSpan,
 } from "./styles";
 import PaymentInformation from "../PaymentInformation";
 import { Controller, useForm } from "react-hook-form";
@@ -18,13 +19,29 @@ export default function HomeForm() {
   const [form] = Form.useForm();
 
   const {
-    register,
     control,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => console.log(data);
+
+  const payValidation = (array) => {
+    const [card, date, cvv, zip] = array;
+    const [month, year] = date.split("/");
+    if (
+      card.length != 19 ||
+      date.length != 5 ||
+      cvv.length != 3 ||
+      zip.length != 5
+    ) {
+      return "Please enter all the information";
+    }
+    if (month > 12 || month <= 0) {
+      return "Month are between 1 and 12";
+    }
+    return true;
+  };
 
   const technologiesOptions = [
     { label: "2G", value: "2G" },
@@ -53,6 +70,7 @@ export default function HomeForm() {
       <Controller
         control={control}
         name="email"
+        rules={{ required: true }}
         render={({ field: { value, name, ref, onChange, onBlur } }) => (
           <Form.Item name={name} label="Email Address" required>
             <Input
@@ -62,56 +80,177 @@ export default function HomeForm() {
               onChange={onChange}
               onBlur={onBlur}
             />
+            {errors.email && errors.email.type === "required" && (
+              <StyleSpan>Please enter your email address</StyleSpan>
+            )}
           </Form.Item>
         )}
       />
 
       <Form.Item css={rowStyle} name="name" label="Full name" required>
         <Input.Group>
-          <Input css={horizontalInputStyle} placeholder="First Name" />
-          <Input css={horizontalRightInputStyle} placeholder="Last Name" />
+          <Controller
+            control={control}
+            name="firstName"
+            rules={{ required: true }}
+            render={({ field: { value, name, ref, onChange, onBlur } }) => (
+              <Input
+                css={horizontalInputStyle}
+                placeholder="First Name"
+                name={name}
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="lastName"
+            rules={{ required: true }}
+            render={({ field: { value, name, ref, onChange, onBlur } }) => (
+              <Input
+                css={horizontalRightInputStyle}
+                placeholder="Last Name"
+                name={name}
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          {((errors.firstName && errors.firstName.type === "required") ||
+            (errors.lastName && errors.lastName.type === "required")) && (
+            <StyleSpan>Please enter your full name</StyleSpan>
+          )}
         </Input.Group>
       </Form.Item>
 
       <Form.Item name="address" label="Address" required>
         <Input.Group>
-          <Input css={verticalInputStyle} placeholder="Street Address" />
-          <Input css={baseInputStyle} placeholder="Office, Suite, Apt." />
+          <Controller
+            control={control}
+            name="street"
+            rules={{ required: true }}
+            render={({ field: { value, name, ref, onChange, onBlur } }) => (
+              <Input
+                css={verticalInputStyle}
+                placeholder="Street Address"
+                name={name}
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="office"
+            rules={{ required: false }}
+            render={({ field: { value, name, ref, onChange, onBlur } }) => (
+              <Input
+                css={baseInputStyle}
+                placeholder="Office, Suite, Apt."
+                name={name}
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
+          />
         </Input.Group>
+        {errors.street && errors.street.type === "required" && (
+          <StyleSpan>Please enter your address</StyleSpan>
+        )}
       </Form.Item>
 
       <div css={rowStyle}>
-        <Form.Item
-          css={css`
-            width: 49%;
-          `}
+        <Controller
+          control={control}
           name="city"
-          label="City"
-          required
-        >
-          <Input css={baseInputStyle} placeholder="" />
-        </Form.Item>
-        <Form.Item css={selectStyle} name="state" label="State" required>
-          <Select css={baseInputStyle} placeholder="Please select">
-            <Option value="illinois">Illinois</Option>
-            <Option value="texas">Texas</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          css={css`
-            width: 19%;
-          `}
+          rules={{ required: true }}
+          render={({ field: { value, name, ref, onChange, onBlur } }) => (
+            <Form.Item
+              css={css`
+                width: 49%;
+              `}
+              name={name}
+              label="City"
+              required
+            >
+              <Input
+                css={baseInputStyle}
+                placeholder=""
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+              {errors.city && errors.city.type === "required" && (
+                <StyleSpan>Please enter your city name</StyleSpan>
+              )}
+            </Form.Item>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="state"
+          rules={{ required: true }}
+          render={({ field: { value, name, ref, onChange, onBlur } }) => (
+            <Form.Item css={selectStyle} name={name} label="State" required>
+              <Select
+                css={baseInputStyle}
+                placeholder="Please select"
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              >
+                <Option value="illinois">Illinois</Option>
+                <Option value="texas">Texas</Option>
+              </Select>
+              {errors.state && errors.state.type === "required" && (
+                <StyleSpan>Please select your state</StyleSpan>
+              )}
+            </Form.Item>
+          )}
+        />
+
+        <Controller
+          control={control}
           name="zip"
-          label="Zip"
-          required
-        >
-          <Input css={baseInputStyle} placeholder="" />
-        </Form.Item>
+          rules={{ required: true, minLength: 5, maxLength: 5 }}
+          render={({ field: { value, name, ref, onChange, onBlur } }) => (
+            <Form.Item
+              css={css`
+                width: 19%;
+              `}
+              name={name}
+              label="Zip"
+              required
+            >
+              <Input
+                css={baseInputStyle}
+                placeholder=""
+                maxLength={5}
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+              {errors.zip && errors.zip.type === "required" && (
+                <StyleSpan>Please enter your zip code</StyleSpan>
+              )}
+              {errors.zip && errors.zip.type === "minLength" && (
+                <StyleSpan>Your zip code must be 5 digits</StyleSpan>
+              )}
+            </Form.Item>
+          )}
+        />
       </div>
 
       <Controller
         control={control}
         name="pay"
+        rules={{ required: true, validate: payValidation }}
         render={({ field: { value, name, ref, onChange, onBlur } }) => (
           <Form.Item name={name} label="Payment details" required>
             <PaymentInformation
@@ -119,6 +258,12 @@ export default function HomeForm() {
               onChange={onChange}
               onBlur={onBlur}
             />
+            {errors.pay && errors.pay.type === "required" && (
+              <StyleSpan>Please enter all your information</StyleSpan>
+            )}
+            {errors.pay && errors.pay.type === "validate" && (
+              <StyleSpan>{errors.pay.message}</StyleSpan>
+            )}
           </Form.Item>
         )}
       />
@@ -126,6 +271,7 @@ export default function HomeForm() {
       <Controller
         control={control}
         name="tech"
+        rules={{ required: true }}
         render={({ field: { value, name, ref, onChange, onBlur } }) => (
           <Form.Item
             label="What radio technologies are you using?"
@@ -139,6 +285,9 @@ export default function HomeForm() {
               onChange={onChange}
               onBlur={onBlur}
             />
+            {errors.tech && errors.tech.type === "required" && (
+              <StyleSpan>Please select at least one</StyleSpan>
+            )}
           </Form.Item>
         )}
       />
@@ -146,6 +295,7 @@ export default function HomeForm() {
       <Controller
         control={control}
         name="data"
+        rules={{ required: true }}
         render={({ field: { value, name, ref, onChange, onBlur } }) => (
           <Form.Item label="How much data ..." required>
             <Radio.Group
@@ -155,6 +305,9 @@ export default function HomeForm() {
               onChange={onChange}
               onBlur={onBlur}
             />
+            {errors.tech && errors.tech.type === "required" && (
+              <StyleSpan>Please select one</StyleSpan>
+            )}
           </Form.Item>
         )}
       />
@@ -162,6 +315,7 @@ export default function HomeForm() {
       <Controller
         control={control}
         name="promo"
+        rules={{ required: false }}
         render={({ field: { value, name, ref, onChange, onBlur } }) => (
           <Form.Item name={name} label="Promo code">
             <Input
