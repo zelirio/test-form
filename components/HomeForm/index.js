@@ -19,6 +19,7 @@ import { CheckOutlined, WarningOutlined } from "@ant-design/icons";
 import { useState } from "react/cjs/react.development";
 import RadioGroup from "../RadioGroup";
 import CheckboxGroup from "../CheckboxGroup";
+import InputGroup from "../InputGroup";
 
 export default function HomeForm() {
   const [form] = Form.useForm();
@@ -112,15 +113,7 @@ export default function HomeForm() {
           </Form.Item>
         )}
       />
-
-      <Form.Item
-        htmlFor="fullName"
-        css={rowStyle}
-        name="name"
-        label="Full name"
-        required
-      >
-        <Input.Group>
+        <InputGroup label="Full Name">
           <Controller
             control={control}
             name="firstName"
@@ -177,11 +170,9 @@ export default function HomeForm() {
             (errors.lastName && errors.lastName.type === "required")) && (
             <StyleSpan>Please enter your full name</StyleSpan>
           )}
-        </Input.Group>
-      </Form.Item>
+        </InputGroup>
 
-      <Form.Item name="address" htmlFor="address" label="Address" required>
-        <Input.Group>
+        <InputGroup label="Address">
           <Controller
             control={control}
             name="street"
@@ -222,11 +213,10 @@ export default function HomeForm() {
               />
             )}
           />
-        </Input.Group>
+        </InputGroup>
         {errors.street && errors.street.type === "required" && (
           <StyleSpan>Please enter your address</StyleSpan>
         )}
-      </Form.Item>
 
       <div css={rowStyle}>
         <Controller

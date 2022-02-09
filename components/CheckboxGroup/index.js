@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Checkbox } from "antd";
 import { useState } from "react/cjs/react.development";
-import { fieldStyle, legendStyle } from "./styles";
+import { fieldStyle, legendStyle } from "../../assets/styles/fieldsetStyles";
 
 RadioGroup.defaultProps = {
   defaultValue: [],

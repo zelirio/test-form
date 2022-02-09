@@ -33,6 +33,12 @@ export default function PaymentInformation(props) {
     }
   };
 
+  const onBlur = () => {
+    if (props.onBlur) {
+      props.onBlur([cardValue, dateValue, cvvValue, zipValue]);
+    }
+  };
+
   const formatCardNumber = (event) => {
     const val = event.target.value;
     const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g;
@@ -102,6 +108,7 @@ export default function PaymentInformation(props) {
           value={cardValue}
           maxLength={19}
           onChange={formatCardNumber}
+          onBlur={onBlur}
           prefix={<LockOutlined />}
         />
         <Input
@@ -111,6 +118,7 @@ export default function PaymentInformation(props) {
           value={dateValue}
           maxLength={5}
           onChange={formatDate}
+          onBlur={onBlur}
         />
         <Input
           css={[middleInputStyle, border]}
@@ -118,6 +126,7 @@ export default function PaymentInformation(props) {
           value={cvvValue}
           maxLength={3}
           onChange={formatCVV}
+          onBlur={onBlur}
         />
         <Input
           css={[rightInputStyle, border]}
@@ -125,6 +134,7 @@ export default function PaymentInformation(props) {
           value={zipValue}
           maxLength={props.zipLength}
           onChange={formatZip}
+          onBlur={onBlur}
         />
       </Input.Group>
       <p css={paragraphStyle}>Encrypted and Secured</p>
