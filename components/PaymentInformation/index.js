@@ -15,8 +15,8 @@ PaymentInformation.defaultProps = {
   zipLength: 5,
   value: "",
   onChange: () => {},
-  borderColor: ""
-
+  borderColor: "",
+  id: "",
 };
 
 export default function PaymentInformation(props) {
@@ -24,7 +24,6 @@ export default function PaymentInformation(props) {
   const [dateValue, SetDateValue] = useState("");
   const [cvvValue, SetCvvValue] = useState("");
   const [zipValue, SetZipValue] = useState("");
-  //const [value, setValue] = useState("")
 
   const focusNext = (event, value, maxLength) => {
     if (value.length >= maxLength) {
@@ -89,12 +88,15 @@ export default function PaymentInformation(props) {
     props.onChange([cardValue, dateValue, cvvValue, onlyNumbers]);
   };
 
-  const border = css`border-color: ${props.borderColor}`
+  const border = css`
+    border-color: ${props.borderColor};
+  `;
 
   return (
     <>
-      <Input.Group compact>
+      <Input.Group id={props.id} compact>
         <Input
+          aria-label="16 digit card number"
           css={[leftInputStyle, border]}
           placeholder="0000 0000 0000 0000"
           value={cardValue}
@@ -103,6 +105,7 @@ export default function PaymentInformation(props) {
           prefix={<LockOutlined />}
         />
         <Input
+          aria-label="expiracy date"
           css={[middleInputStyle, border]}
           placeholder="MM/YY"
           value={dateValue}

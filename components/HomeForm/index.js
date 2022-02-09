@@ -16,16 +16,20 @@ import PaymentInformation from "../PaymentInformation";
 import { Controller, useForm } from "react-hook-form";
 import { baseInputStyle } from "../../assets/styles/baseInputStyle";
 import { CheckOutlined, WarningOutlined } from "@ant-design/icons";
+import { useState } from "react/cjs/react.development";
+import RadioGroup from "../RadioGroup";
+import CheckboxGroup from "../CheckboxGroup";
 
 export default function HomeForm() {
   const [form] = Form.useForm();
 
+  const [validCode, setValidCode] = useState(false);
+
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm({reValidateMode: 'onBlur'});
+  } = useForm({ reValidateMode: "onBlur" });
   const onSubmit = (data) => console.log(data);
 
   const payValidation = (array) => {
@@ -43,6 +47,16 @@ export default function HomeForm() {
       return "Month are between 1 and 12";
     }
     return true;
+  };
+
+  const checkCode = (value) => {
+    const codes = ["prom", "youpidou", "yolo"];
+
+    if (codes.includes(value)) {
+      setValidCode(true);
+    } else {
+      setValidCode(false);
+    }
   };
 
   const technologiesOptions = [
@@ -73,15 +87,24 @@ export default function HomeForm() {
         control={control}
         name="email"
         rules={{ required: true }}
-        render={({ field: { value, name, ref, onChange, onBlur } }) => (
-          <Form.Item name={name} label="Email Address" required>
+        render={({ field: { value, name, onChange, onBlur } }) => (
+          <Form.Item htmlFor="email" name={name} label="Email Address" required>
             <Input
+              id="email"
               type="email"
               css={[baseInputStyle, errors.email && redBorderStyle]}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
-              suffix={errors.email && <WarningOutlined css={css`color:red`}/>}
+              suffix={
+                errors.email && (
+                  <WarningOutlined
+                    css={css`
+                      color: red;
+                    `}
+                  />
+                )
+              }
             />
             {errors.email && errors.email.type === "required" && (
               <StyleSpan>Please enter your email address</StyleSpan>
@@ -90,21 +113,36 @@ export default function HomeForm() {
         )}
       />
 
-      <Form.Item css={rowStyle} name="name" label="Full name" required>
+      <Form.Item
+        htmlFor="fullName"
+        css={rowStyle}
+        name="name"
+        label="Full name"
+        required
+      >
         <Input.Group>
           <Controller
             control={control}
             name="firstName"
             rules={{ required: true }}
-            render={({ field: { value, name, ref, onChange, onBlur } }) => (
+            render={({ field: { value, name, onChange, onBlur } }) => (
               <Input
+                id="fullName"
                 css={[horizontalInputStyle, errors.firstName && redBorderStyle]}
                 placeholder="First Name"
                 name={name}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
-                suffix={errors.firstName && <WarningOutlined css={css`color:red`}/>}
+                suffix={
+                  errors.firstName && (
+                    <WarningOutlined
+                      css={css`
+                        color: red;
+                      `}
+                    />
+                  )
+                }
               />
             )}
           />
@@ -112,15 +150,26 @@ export default function HomeForm() {
             control={control}
             name="lastName"
             rules={{ required: true }}
-            render={({ field: { value, name, ref, onChange, onBlur } }) => (
+            render={({ field: { value, name, onChange, onBlur } }) => (
               <Input
-                css={[horizontalRightInputStyle, errors.lastName && redBorderStyle]}
+                css={[
+                  horizontalRightInputStyle,
+                  errors.lastName && redBorderStyle,
+                ]}
                 placeholder="Last Name"
                 name={name}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
-                suffix={errors.lastName && <WarningOutlined css={css`color:red`}/>}
+                suffix={
+                  errors.lastName && (
+                    <WarningOutlined
+                      css={css`
+                        color: red;
+                      `}
+                    />
+                  )
+                }
               />
             )}
           />
@@ -131,21 +180,30 @@ export default function HomeForm() {
         </Input.Group>
       </Form.Item>
 
-      <Form.Item name="address" label="Address" required>
+      <Form.Item name="address" htmlFor="address" label="Address" required>
         <Input.Group>
           <Controller
             control={control}
             name="street"
             rules={{ required: true }}
-            render={({ field: { value, name, ref, onChange, onBlur } }) => (
+            render={({ field: { value, name, onChange, onBlur } }) => (
               <Input
+                id="address"
                 css={[verticalInputStyle, errors.street && redBorderStyle]}
                 placeholder="Street Address"
                 name={name}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
-                suffix={errors.street && <WarningOutlined css={css`color:red`}/>}
+                suffix={
+                  errors.street && (
+                    <WarningOutlined
+                      css={css`
+                        color: red;
+                      `}
+                    />
+                  )
+                }
               />
             )}
           />
@@ -153,7 +211,7 @@ export default function HomeForm() {
             control={control}
             name="office"
             rules={{ required: false }}
-            render={({ field: { value, name, ref, onChange, onBlur } }) => (
+            render={({ field: { value, name, onChange, onBlur } }) => (
               <Input
                 css={baseInputStyle}
                 placeholder="Office, Suite, Apt."
@@ -175,22 +233,32 @@ export default function HomeForm() {
           control={control}
           name="city"
           rules={{ required: true }}
-          render={({ field: { value, name, ref, onChange, onBlur } }) => (
+          render={({ field: { value, name, onChange, onBlur } }) => (
             <Form.Item
               css={css`
                 width: 49%;
               `}
               name={name}
+              htmlFor="city"
               label="City"
               required
             >
               <Input
+                id="city"
                 css={[baseInputStyle, errors.city && redBorderStyle]}
                 placeholder=""
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
-                suffix={errors.city && <WarningOutlined css={css`color:red`}/>}
+                suffix={
+                  errors.city && (
+                    <WarningOutlined
+                      css={css`
+                        color: red;
+                      `}
+                    />
+                  )
+                }
               />
               {errors.city && errors.city.type === "required" && (
                 <StyleSpan>Please enter your city name</StyleSpan>
@@ -203,17 +271,28 @@ export default function HomeForm() {
           control={control}
           name="state"
           rules={{ required: true }}
-          render={({ field: { value, name, ref, onChange, onBlur } }) => (
-            <Form.Item css={selectStyle} name={name} label="State" required>
+          render={({ field: { value, name, onChange, onBlur } }) => (
+            <Form.Item
+              htmlFor="state"
+              css={selectStyle}
+              name={name}
+              label="State"
+              required
+            >
               <Select
+                id="state"
                 css={[baseInputStyle, errors.state && redBorderStyle]}
                 placeholder="Please select"
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
               >
-                <Option value="illinois">Illinois</Option>
-                <Option value="texas">Texas</Option>
+                <Option aria-label="illinois" value="illinois">
+                  Illinois
+                </Option>
+                <Option aria-label="texas" value="texas">
+                  Texas
+                </Option>
               </Select>
               {errors.state && errors.state.type === "required" && (
                 <StyleSpan>Please select your state</StyleSpan>
@@ -226,8 +305,9 @@ export default function HomeForm() {
           control={control}
           name="zip"
           rules={{ required: true, minLength: 5, maxLength: 5 }}
-          render={({ field: { value, name, ref, onChange, onBlur } }) => (
+          render={({ field: { value, name, onChange, onBlur } }) => (
             <Form.Item
+              htmlFor="zip"
               css={css`
                 width: 19%;
               `}
@@ -236,13 +316,22 @@ export default function HomeForm() {
               required
             >
               <Input
+                id="zip"
                 css={[baseInputStyle, errors.zip && redBorderStyle]}
                 placeholder=""
                 maxLength={5}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
-                suffix={errors.zip && <WarningOutlined css={css`color:red`}/>}
+                suffix={
+                  errors.zip && (
+                    <WarningOutlined
+                      css={css`
+                        color: red;
+                      `}
+                    />
+                  )
+                }
               />
               {errors.zip && errors.zip.type === "required" && (
                 <StyleSpan>Please enter your zip code</StyleSpan>
@@ -259,9 +348,10 @@ export default function HomeForm() {
         control={control}
         name="pay"
         rules={{ required: true, validate: payValidation }}
-        render={({ field: { value, name, ref, onChange, onBlur } }) => (
-          <Form.Item name={name} label="Payment details" required>
+        render={({ field: { value, name, onChange, onBlur } }) => (
+          <Form.Item htmlFor="payment" name={name} label="Payment details" required>
             <PaymentInformation
+              id="payment"
               value={value}
               onChange={onChange}
               onBlur={onBlur}
@@ -277,17 +367,20 @@ export default function HomeForm() {
         )}
       />
 
-      <Controller
+      {/*<Controller
         control={control}
         name="tech"
         rules={{ required: true }}
-        render={({ field: { value, name, ref, onChange, onBlur } }) => (
+        render={({ field: { value, name, onChange, onBlur } }) => (
           <Form.Item
+            htmlFor="techno"
             label="What radio technologies are you using?"
             valuePropName="checked"
             required
           >
             <Checkbox.Group
+              id="techno"
+              aria-label="What radio technologies are you using?"
               name={name}
               options={technologiesOptions}
               value={value}
@@ -299,15 +392,38 @@ export default function HomeForm() {
             )}
           </Form.Item>
         )}
+            />*/}
+
+<Controller
+        control={control}
+        name="tech"
+        rules={{ required: true }}
+        render={({ field: { value, name, onChange, onBlur } }) => (
+          <div css={css`display: flex; align-items: flex-end;`}>
+            <CheckboxGroup
+              id="techno"
+              label="What radio technologies are you using?"
+              name={name}
+              options={technologiesOptions}
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+            />
+            {errors.tech && errors.tech.type === "required" && (
+              <StyleSpan>Please select at least one</StyleSpan>
+            )}
+            </div>
+        )}
       />
 
-      <Controller
+      {/*<Controller
         control={control}
         name="data"
         rules={{ required: true }}
-        render={({ field: { value, name, ref, onChange, onBlur } }) => (
-          <Form.Item label="How much data ..." required>
+        render={({ field: { value, name, onChange, onBlur } }) => (
+          <Form.Item htmlFor="data" label="How much data ..." required>
             <Radio.Group
+              id="data"
               name={name}
               options={dataOptions}
               value={value}
@@ -319,19 +435,55 @@ export default function HomeForm() {
             )}
           </Form.Item>
         )}
+            />*/}
+
+      <Controller
+        control={control}
+        name="data"
+        rules={{ required: true }}
+        render={({ field: { value, name, onChange, onBlur } }) => (
+          <div css={css`display: flex; align-items: flex-end;`}>
+            <RadioGroup
+              label="How much data ..."
+              name={name}
+              options={dataOptions}
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+            />
+            {errors.data && errors.data.type === "required" && (
+              <StyleSpan>Please select one</StyleSpan>
+            )}
+          </div>
+        )}
       />
 
       <Controller
         control={control}
         name="promo"
         rules={{ required: false }}
-        render={({ field: { value, name, ref, onChange, onBlur } }) => (
+        render={({ field: { value, name, onChange } }) => (
           <Form.Item name={name} label="Promo code">
             <Input
-              css={baseInputStyle}
+              css={[
+                baseInputStyle,
+                validCode &&
+                  css`
+                    border-color: green;
+                  `,
+              ]}
               value={value}
               onChange={onChange}
-              onBlur={onBlur}
+              onBlur={() => checkCode(value)}
+              suffix={
+                validCode && (
+                  <CheckOutlined
+                    css={css`
+                      color: green;
+                    `}
+                  />
+                )
+              }
             />
           </Form.Item>
         )}
